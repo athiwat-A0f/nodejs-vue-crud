@@ -2,7 +2,7 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, 'uploads')
+    callback(null, 'public/uploads')
   },
   filename: function (req, file, callback) {
     callback(null, file.originalname)
@@ -15,9 +15,9 @@ module.exports = app => {
     const tutorials = require("../controllers/tutorial.controller.js");
   
     var router = require("express").Router();
-  
+
     // Create a new Tutorial
-    router.post("/", upload.single('upload'), tutorials.create);
+    router.post("/", upload.single('image'), tutorials.create);
   
     // Retrieve all Tutorials
     router.get("/", tutorials.findAll);
@@ -29,7 +29,7 @@ module.exports = app => {
     router.get("/:id", tutorials.findOne);
   
     // Update a Tutorial with id
-    router.put("/:id", tutorials.update);
+    router.put("/:id", upload.single('image'), tutorials.update);
   
     // Delete a Tutorial with id
     router.delete("/:id", tutorials.delete);

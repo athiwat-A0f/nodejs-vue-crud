@@ -4,8 +4,6 @@ const Op = db.Sequelize.Op;
 
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
-    // console.log(req.file);
-    // return;
     // Validate request
     if (!req.body.title) {
         res.status(400).send({
@@ -19,7 +17,7 @@ exports.create = (req, res) => {
         title: req.body.title,
         description: req.body.description,
         published: req.body.published ? req.body.published : false,
-        image: req.file.filename ? req.file.filename : false
+        image: req.file ? req.file.filename : false
     };
 
     // Save Tutorial in the database
@@ -76,8 +74,27 @@ exports.findOne = (req, res) => {
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id;
+    // console.log(new Date().toString())
+    // return
+    let tutorial = []
+    if(req.file) {
+        tutorial = {
+            title: req.body.title,
+            description: req.body.description,
+            published: req.body.published ? req.body.published : false,
+            image: req.file.filename,
+            // updatedAt: new Date().toString(),
+        };
+    } else {
+        tutorial = {
+            title: req.body.title,
+            description: req.body.description,
+            published: req.body.published ? req.body.published : false,
+            // updatedAt: new Date().toString(),
+        };
+    }
 
-    Tutorial.update(req.body, {
+    Tutorial.update(tutorial, {
         where: { id: id }
     })
         .then(num => {
@@ -153,3 +170,5 @@ exports.findAllPublished = (req, res) => {
             });
         });
 };
+
+

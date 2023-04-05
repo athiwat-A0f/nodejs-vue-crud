@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-// const multer = require('multer');
-// const upload = multer({ dest: 'uploads' });
 
 const app = express();
 
@@ -11,6 +9,9 @@ const db = require("./app/models");
 var corsOptions = {
     origin: "http://localhost:5173"
 };
+
+// process.env.TZ = "Asia/Bangkok";
+// console.log(new Date().toString());
 
 app.use(cors(corsOptions));
 
@@ -22,19 +23,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // // for parsing multipart/form-data
 // app.use(upload.array()); 
-// app.use(express.static('public'));
+app.use(express.static('public'))
 
 // simple route
 app.get("/", (req, res) => {
     res.json({ message: "Welcome to bezkoder application." });
 });
-
-// var type = upload.single('upload');
-// console.log({ type })
-
-// app.use((error, req, res, next) => {
-//     console.log('This is the rejected field ->', req);
-// });
 
 
 db.sequelize.sync()

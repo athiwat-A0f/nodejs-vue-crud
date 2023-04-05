@@ -11,7 +11,14 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     min: dbConfig.pool.min,
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle
-  }
+  },
+  dialectOptions: {
+    useUTC: false, // for reading from database
+    dateStrings: true,
+    typeCast: true
+  },
+  timezone: dbConfig.timezone
+
 });
 
 const db = {};
