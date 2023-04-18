@@ -30,10 +30,30 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to bezkoder application." });
 });
 
+const Role = db.role;
+
+function initial() {
+    Role.create({
+      id: 1,
+      name: "user"
+    });
+   
+    Role.create({
+      id: 2,
+      name: "moderator"
+    });
+   
+    Role.create({
+      id: 3,
+      name: "admin"
+    });
+  }
 
 db.sequelize.sync()
     .then(() => {
         console.log("Synced db.");
+
+        //initial(); uncomment, run first time!
     })
     .catch((err) => {
         console.log("Failed to sync db: " + err.message);
@@ -41,6 +61,8 @@ db.sequelize.sync()
 
 
 require("./app/routes/turorial.routes")(app);
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
